@@ -3,9 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/yoshi/Desktop/conversor_divisas/src/conversor_divisas/model/Divisa.java</file>
-            <file>file:/C:/Users/yoshi/Desktop/conversor_divisas/src/conversor_divisas/model/DivisaBase.java</file>
-            <file>file:/C:/Users/yoshi/Desktop/conversor_divisas/src/conversor_divisas/services/ConversionService.java</file>
+            <file>file:/C:/Users/yoshi/Desktop/conversor_divisas/src/conversor_divisas/services/DatabaseService.java</file>
+            <file>file:/C:/Users/yoshi/Desktop/conversor_divisas/src/conversor_divisas/test/DatabaseTest.java</file>
             <file>file:/C:/Users/yoshi/Desktop/conversor_divisas/src/conversor_divisas/view/Principal.java</file>
             <file>file:/C:/Users/yoshi/Desktop/conversor_divisas/src/conversor_divisas/test/ConversorDivisasTest.java</file>
         </group>
