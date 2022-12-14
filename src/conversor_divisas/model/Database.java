@@ -1,4 +1,4 @@
-package conversor_divisas.services;
+package conversor_divisas.model;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,10 +11,10 @@ public abstract class Database {
 
     private Connection conexion = null;
     
-    public Database() throws SQLException, ClassNotFoundException {
+    public Database() throws ClassNotFoundException, SQLException {
         
         this.conexion();
-        
+
     }
     
     /**
@@ -23,7 +23,7 @@ public abstract class Database {
     private void conexion() throws ClassNotFoundException, SQLException {//Establece la conexion con la base de datos
         
         Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");            
-        this.conexion = DriverManager.getConnection("jdbc:ucanaccess://assets\\Divisas.accdb", "root", "MNuk2287*");
+        this.conexion = DriverManager.getConnection("jdbc:ucanaccess://assets\\Divisas.accdb");
         
     }
     
@@ -31,14 +31,15 @@ public abstract class Database {
      * Ejecuta un query que puede retornar mas de un registro.
      * 
      * @param query Query que se desea ejecutar en la base de datos.
-     * @param nAtributos: Numero de atributos que se desean obtener con el query.
+     * @param nAtributos Numero de atributos que se desean obtener con el query.
+     * @param expectedRegisters Numero aproximado de registros que se espera obtener.
      * @return Un ArrayList con los registros obtenidos por el query.
      * 
      * @throws SQLException
      */
-    public ArrayList<String[]> ejecutarQuery(String query, int nAtributos) throws SQLException {//Ejecuta un query en la base de datos (este puede obtener multiples registros)
+    public ArrayList<String[]> ejecutarQuery(String query, int nAtributos, int expectedRegisters) throws SQLException {//Ejecuta un query en la base de datos (este puede obtener multiples registros)
               
-        ArrayList datos = new ArrayList<String[]>();//Almacena todos los registros obtenidos
+        ArrayList datos = new ArrayList<String[]>(expectedRegisters);//Almacena todos los registros obtenidos
         String registro [] = new String[nAtributos];//Almacena un registro
         
         Statement stment = this.conexion.createStatement();
@@ -48,7 +49,7 @@ public abstract class Database {
 
         while(rs.next()) {//Obtener los datos recibidos de la base de datos
 
-            for(int i=0 ; i<nAtributos; i++){
+            for(int i=0 ; i<nAtributos ; i++){
 
 //                if (i>=0&&i<(nAtributos-1)) registro[(i+1)] = rs.getString((i+1));
 //                else registro[0] = rs.getString((i+1));
@@ -71,10 +72,40 @@ public abstract class Database {
     
     /**
      * 
+     * Ejecuta un query que puede obtener solo un registro.
+     * 
+     * @param query Query que se desea ejecutar en la base de datos.
+     * @param nAtributos Numero de atributos que se desean obtener con el query.
+     * 
+     * @return Un array de String con los datos obtenidos por el query.
+     * 
+     * @throws SQLException 
+     */
+    public String[] ejecutarQuery(String query, int nAtributos) throws SQLException {
+        String registro [] = new String[nAtributos];//Almacena un registro
+        
+        Statement stment = this.conexion.createStatement();
+
+        //Ejecutar Query (sentencia SQL)
+        ResultSet rs = stment.executeQuery(query);
+
+        for(int i=0 ; i<nAtributos ; i++){
+            registro[i] = rs.getString(i+1);
+        }
+        
+        rs.close();
+        stment.close();
+        
+        return registro;
+    }
+    
+    /**
+     * 
      * Ejecuta un query con el cual se desea obtener un solo dato o atributo de una tabla.
      * 
      * @param query Query que se desea ejecutar en la base de datos.
      * @param atributo Nombre del atributo que se desea obtener.
+     * 
      * @return Un String que contiene el dato o atributo que se obtuvo con el query.
      * 
      * @throws SQLException 
