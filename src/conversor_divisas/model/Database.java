@@ -37,7 +37,7 @@ public abstract class Database {
      * 
      * @throws SQLException
      */
-    public ArrayList<String[]> ejecutarQuery(String query, int nAtributos, int expectedRegisters) throws SQLException {//Ejecuta un query en la base de datos (este puede obtener multiples registros)
+    protected ArrayList<String[]> ejecutarQuery(String query, int nAtributos, int expectedRegisters) throws SQLException {//Ejecuta un query en la base de datos (este puede obtener multiples registros)
               
         ArrayList datos = new ArrayList<String[]>(expectedRegisters);//Almacena todos los registros obtenidos
         String registro [] = new String[nAtributos];//Almacena un registro
@@ -81,7 +81,7 @@ public abstract class Database {
      * 
      * @throws SQLException 
      */
-    public String[] ejecutarQuery(String query, int nAtributos) throws SQLException {
+    protected String[] ejecutarQuery(String query, int nAtributos) throws SQLException {
         String registro [] = new String[nAtributos];//Almacena un registro
         
         Statement stment = this.conexion.createStatement();
@@ -110,7 +110,7 @@ public abstract class Database {
      * 
      * @throws SQLException 
      */
-    public String ejecutarQuery(String query, String atributo) throws SQLException {//Ejecuta un query en la base de datos (Este metodo obtiene un solo dato)
+    protected String ejecutarQuery(String query, String atributo) throws SQLException {//Ejecuta un query en la base de datos (Este metodo obtiene un solo dato)
         
         String dato;//Almacena todos los registros obtenidos
         
@@ -138,7 +138,7 @@ public abstract class Database {
      * @throws SQLException
      * @throws SQLIntegrityConstraintViolationException 
      */
-    public void ejecutarUpdate(String query) throws SQLException, SQLIntegrityConstraintViolationException{
+    protected void ejecutarUpdate(String query) throws SQLException, SQLIntegrityConstraintViolationException{
             
             Statement stment = this.conexion.createStatement();
             

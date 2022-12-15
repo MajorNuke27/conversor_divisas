@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -14,6 +15,7 @@ import java.util.HashMap;
  */
 public class DatabaseService extends Database {
     
+    public static final int INDEX_OF_BASE = 0;
     private HashMap<String, Float> equivalencias;
     private ArrayList<Divisa> divisas;
     private DivisaBase divisaBase;
@@ -37,8 +39,10 @@ public class DatabaseService extends Database {
         
         divisasString.forEach( divisa -> {
             
-            divisasObj.add(new Divisa(divisa[1], divisa[0]));
-            equivalencias.put(divisa[0], Float.parseFloat(divisa[2]));
+            if(!divisa[0].equals("EUR")){
+                divisasObj.add(new Divisa(divisa[1], divisa[0]));
+                equivalencias.put(divisa[0], Float.parseFloat(divisa[2]));
+            }
             
         });
 
@@ -46,24 +50,30 @@ public class DatabaseService extends Database {
         fecha = fecha.substring(0, fecha.indexOf(' '));
         LocalDate fechaObj = LocalDate.parse(fecha);
         
-        Divisa base = divisasObj.get(0);
-        this.divisaBase = new DivisaBase(base.getNombre(), base.getClave(), equivalencias, fechaObj);
-        divisasObj.set(0, this.divisaBase);
+        String[] datosBase = super.ejecutarQuery("SELECT clave, nombre FROM divisa WHERE clave = (SELECT clave FROM divisa_base)", 2);
+        this.divisaBase = new DivisaBase(datosBase[1], datosBase[1], equivalencias, fechaObj);
+        divisasObj.add(0, this.divisaBase);
         
         this.equivalencias = equivalencias;
         this.divisas = divisasObj;
 
     }
     
-    public void setNewEquivalencias(HashMap<String, Float> equivalencias) throws SQLException {
+    /**
+     * 
+     * Actualiza los valores de cambio en la base de datos.
+     * 
+     * @param equivalencias: Map que contiene los nuevos valores de cambio para cada una de las divisas.
+     * 
+     * @throws SQLException 
+     */
+    public void setNewEquivalencias(Map<String, Float> equivalencias) throws SQLException {
+        Object[] claves = equivalencias.keySet().toArray();
         
-        String[] claves = (String[]) equivalencias.keySet().toArray();
-        
-        for(String clave : claves) {
-            float equiv = equivalencias.get(clave);
-            super.ejecutarUpdate("UPDATE divisa SET valor_de_cambio = " + equiv + " WHERE clave = '" + clave + "'");
+        for(Object clave : claves) {
+            float equiv = equivalencias.get(clave.toString());
+            super.ejecutarUpdate("UPDATE divisa SET valor_de_cambio = " + equiv + " WHERE clave = '" + clave.toString() + "'");
         }
-        
     }
  
     public ArrayList<Divisa> getDivisas() throws SQLException {
