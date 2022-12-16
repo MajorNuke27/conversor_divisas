@@ -1,4 +1,4 @@
-# conversor_divisas
+# Conversor de Divisas
 
 Conversor de divisas que implementa una API para obtener tazas de cambio del día actual.
 
