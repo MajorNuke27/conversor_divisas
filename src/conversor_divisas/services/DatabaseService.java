@@ -3,6 +3,7 @@ package conversor_divisas.services;
 import conversor_divisas.model.Database;
 import conversor_divisas.model.Divisa;
 import conversor_divisas.model.DivisaBase;
+import java.io.Closeable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Map;
  *
  * @author Esau Montiel
  */
-public class DatabaseService extends Database {
+public class DatabaseService extends Database implements Closeable{
     
     public static final int INDEX_OF_BASE = 0;
     private HashMap<String, Float> equivalencias;
@@ -35,14 +36,15 @@ public class DatabaseService extends Database {
         
         ArrayList<Divisa> divisasObj = new ArrayList<>(163);
         ArrayList<String[]> divisasString = super.ejecutarQuery("SELECT * FROM divisa ORDER BY valor_de_cambio ASC", 3, 163);
-        HashMap<String, Float> equivalencias = new HashMap<>(162);
+        HashMap<String, Float> equivalencias = new HashMap<>(163);
         
         divisasString.forEach( divisa -> {
             
-            if(!divisa[0].equals("EUR")){
-                divisasObj.add(new Divisa(divisa[1], divisa[0]));
-                equivalencias.put(divisa[0], Float.parseFloat(divisa[2]));
+            if(!divisa[1].equals("EUR")){
+                divisasObj.add(new Divisa(divisa[0], divisa[1]));
             }
+            
+            equivalencias.put(divisa[0], Float.parseFloat(divisa[2]));
             
         });
 
@@ -51,8 +53,8 @@ public class DatabaseService extends Database {
         LocalDate fechaObj = LocalDate.parse(fecha);
         
         String[] datosBase = super.ejecutarQuery("SELECT clave, nombre FROM divisa WHERE clave = (SELECT clave FROM divisa_base)", 2);
-        this.divisaBase = new DivisaBase(datosBase[1], datosBase[1], equivalencias, fechaObj);
-        divisasObj.add(0, this.divisaBase);
+        this.divisaBase = new DivisaBase(datosBase[1], datosBase[0], equivalencias, fechaObj);
+        divisasObj.add(INDEX_OF_BASE, this.divisaBase);
         
         this.equivalencias = equivalencias;
         this.divisas = divisasObj;
@@ -67,13 +69,15 @@ public class DatabaseService extends Database {
      * 
      * @throws SQLException 
      */
-    public void setNewEquivalencias(Map<String, Float> equivalencias) throws SQLException {
+    public void setNewEquivalencias(Map<String, Float> equivalencias, LocalDate fecha) throws SQLException {
         Object[] claves = equivalencias.keySet().toArray();
         
         for(Object clave : claves) {
             float equiv = equivalencias.get(clave.toString());
             super.ejecutarUpdate("UPDATE divisa SET valor_de_cambio = " + equiv + " WHERE clave = '" + clave.toString() + "'");
         }
+        
+        super.ejecutarUpdate("UPDATE divisa_base SET fecha = '" + fecha.toString() + "'");
     }
  
     public ArrayList<Divisa> getDivisas() throws SQLException {

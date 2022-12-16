@@ -32,7 +32,7 @@ public class Divisa {
     
     @Override
     public String toString() {
-        return this.nombre + "(" + this.clave + ")";
+        return this.nombre + " (" + this.clave + ")";
     }   
     
 }

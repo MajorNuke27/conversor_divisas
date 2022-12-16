@@ -1,26 +1,30 @@
 package conversor_divisas.model;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author yoshi
  */
-public abstract class Database {
+public abstract class Database implements Closeable{
 
     private Connection conexion = null;
     
     public Database() throws ClassNotFoundException, SQLException {
         
-        this.conexion();
+        this.createConexion();
 
     }
     
     /**
      * Establece la conexion con a base de datos
      */
-    private void conexion() throws ClassNotFoundException, SQLException {//Establece la conexion con la base de datos
+    private void createConexion() throws ClassNotFoundException, SQLException {//Establece la conexion con la base de datos
         
         Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");            
         this.conexion = DriverManager.getConnection("jdbc:ucanaccess://assets\\Divisas.accdb");
@@ -88,7 +92,8 @@ public abstract class Database {
 
         //Ejecutar Query (sentencia SQL)
         ResultSet rs = stment.executeQuery(query);
-
+        rs.next();
+        
         for(int i=0 ; i<nAtributos ; i++){
             registro[i] = rs.getString(i+1);
         }
@@ -146,6 +151,15 @@ public abstract class Database {
             stment.executeUpdate(query);
             stment.close();
         
+    }
+
+    @Override
+    public void close() throws IOException {
+        try {
+            this.conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
