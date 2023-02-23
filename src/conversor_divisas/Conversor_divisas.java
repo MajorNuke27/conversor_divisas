@@ -39,13 +39,13 @@ public class Conversor_divisas {
             view.setVisible(true);
             
         } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Error", "Ocurrio un problema con la base de datos, por favor reinicie el programa", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocurrio un problema con la base de datos, por favor reinicie el programa", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (JsonProcessingException ex) {
-            JOptionPane.showMessageDialog(null, "Error", "Ocurrio un problema al obtener las tazas de cambio.\n" + ex.toString(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocurrio un problema al obtener las tazas de cambio.\n" + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             System.out.println("error = " + ex.toString());
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error", "Ocurrio un problema con la base de datos, por favor reinicie el programa", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocurrio un problema con la base de datos, por favor reinicie el programa", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }
