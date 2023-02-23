@@ -3,7 +3,6 @@ package conversor_divisas.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import conversor_divisas.model.Divisa;
-import conversor_divisas.model.DivisaBase;
 import java.util.ArrayList;
 
 /**
@@ -18,12 +17,9 @@ public abstract class DeserializationService {
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Divisa> lista = new ArrayList<>(163);
         
-        lista.add(mapper.readValue(jsonString, DivisaBase.class));
-        
         mapper.readTree(jsonString).get("rates").fields().forEachRemaining( divisa -> {
         
-            if(!divisa.getKey().equals("EUR"))
-                lista.add(new Divisa(divisa.getValue().get("currency_name").asText(), divisa.getKey()));
+            lista.add(new Divisa(divisa.getValue().get("currency_name").asText(), divisa.getKey(), Float.parseFloat(divisa.getValue().get("rate").toString())));
             
         });
         

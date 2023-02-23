@@ -9,6 +9,7 @@ public class Divisa {
     
     private final String nombre;
     private final String clave;
+    private final float equivalencia;
 
     
     /**
@@ -16,10 +17,12 @@ public class Divisa {
      * 
      * @param nombre Nombre completo de la divisa.
      * @param clave Clave de 3 caracteres que identifica a la divisa.
+     * @param equivalencia: equivalencia de esta divisa con respecto a una divisa base.
      */
-    public Divisa(String nombre, String clave) {
+    public Divisa(String nombre, String clave, float equivalencia) {
         this.nombre = nombre;
         this.clave = clave;
+        this.equivalencia = equivalencia;
     }
 
     public String getNombre() {
@@ -30,9 +33,13 @@ public class Divisa {
         return clave;
     }
     
+    public float getEquivalencia() {
+        return equivalencia;
+    }
+    
     @Override
     public String toString() {
         return this.nombre + " (" + this.clave + ")";
-    }   
+    }
     
 }
