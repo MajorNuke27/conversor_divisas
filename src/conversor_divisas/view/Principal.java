@@ -1,9 +1,7 @@
 package conversor_divisas.view;
 
 import conversor_divisas.model.Divisa;
-import conversor_divisas.model.DivisaBase;
 import conversor_divisas.services.ConversionService;
-import conversor_divisas.services.DatabaseService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal(ArrayList<Divisa> divisas, LocalDate fecha) {
         this();
         this.divisas = divisas;
-        this.conversor = new ConversionService((DivisaBase) this.divisas.get(DatabaseService.INDEX_OF_BASE));
+        this.conversor = new ConversionService();
         this.jlbFecha.setText("Taza de cambio del dia: " + fecha.format(DateTimeFormatter.ofPattern("dd MMMM uuuu")));
         
         this.setComboBoxDivisas(divisas);
