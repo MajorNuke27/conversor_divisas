@@ -14,6 +14,7 @@ import java.util.Map;
  *
  * @author Esau Montiel
  */
+@Deprecated
 
 @JsonDeserialize(builder = DivisaBase.Builder.class)
 public class DivisaBase extends Divisa{
@@ -32,7 +33,7 @@ public class DivisaBase extends Divisa{
      * @param fecha Fecha en la que se obtuvieron las equivalencias de las divisas.
      */
     public DivisaBase(String nombre, String clave, HashMap equivalencias, LocalDate fecha) {
-        super(nombre, clave);
+        super(nombre, clave, 1);
         this.equivalencias = new HashMap<>(equivalencias);
         this.fecha = fecha;
     }
