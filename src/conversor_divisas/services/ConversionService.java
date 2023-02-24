@@ -1,26 +1,13 @@
 package conversor_divisas.services;
 
 import conversor_divisas.model.Divisa;
-import conversor_divisas.model.DivisaBase;
 
 /**
  *
  * @author Esau Montiel
  */
 public class ConversionService {
-    
-    private final DivisaBase base;
-    
-    
-    public ConversionService(DivisaBase base) {
-        this.base = base;
-    }
-    
-    
-    private float getEquivalenciaBase(Divisa divisa) {       
-        return 1/this.base.getEquivalencia(divisa.getClave());
-    }
-    
+
     /**
      * 
      * Convierta la cantidad ingresada divisaInicial en divisaObjetivo.
@@ -59,7 +46,7 @@ public class ConversionService {
 
         */ 
 
-        return (this.getEquivalenciaBase(divisaInicial) / this.getEquivalenciaBase(divisaObjetivo)) * cantidad;
+        return ( (1/divisaInicial.getEquivalencia()) / (1/divisaObjetivo.getEquivalencia())) * cantidad;
         
     }
     
