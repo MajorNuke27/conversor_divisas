@@ -2,10 +2,14 @@ package conversor_divisas.view;
 
 import conversor_divisas.model.Divisa;
 import conversor_divisas.services.ConversionService;
+import java.awt.Font;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -15,11 +19,15 @@ public class Principal extends javax.swing.JFrame {
 
     private ArrayList<Divisa> divisas;
     private ConversionService conversor;
+    private int indexJcbBase;
+    private int indexJcbObjetivo;
     
     /**
      * Creates new form Principal
      */
     private Principal() {
+        this.indexJcbBase = 0;
+        this.indexJcbObjetivo = 1;
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -32,6 +40,16 @@ public class Principal extends javax.swing.JFrame {
         
         this.setComboBoxDivisas(divisas);
         this.jcbObjetivo.setSelectedIndex(1);
+        
+        this.jtbConversion.getTableHeader().setFont(new Font("Microsoft Sans Serif", 0, 16));
+        this.jtbConversion.setRowHeight(50);
+        
+        DefaultTableCellRenderer cellRender = new DefaultTableCellRenderer();
+        cellRender.setHorizontalAlignment(SwingConstants.CENTER);
+
+        this.jtbConversion.getColumnModel().getColumns().asIterator().forEachRemaining( column -> {
+            column.setCellRenderer(cellRender);
+        });
     }
     
     private void setComboBoxDivisas(ArrayList<Divisa> divisas) {
@@ -39,6 +57,24 @@ public class Principal extends javax.swing.JFrame {
             this.jcbBase.addItem(divisa.toString());
             this.jcbObjetivo.addItem(divisa.toString());
         });
+    }
+    
+    private void setTableHeader(String title, int columnIndex) {
+        this.jtbConversion.getColumnModel().getColumn(columnIndex).setHeaderValue(title);
+        this.jtbConversion.getTableHeader().repaint();
+    }
+    
+    private void setLabelEquivalenciaBase (Divisa base, Divisa objetivo) {
+        float conversion  = this.conversor.convertir(base, objetivo, 1);
+        String roundedConversion = new DecimalFormat("0.00").format(conversion);
+        String value = String.format("1.00 %s equivale a %s %s", base.toString(), roundedConversion, objetivo.toString());
+        
+        this.jlbConversion.setText(value);
+    }
+    
+    private void verifyAutoConversion(){
+        float cantidad = this.jtfCantidad.getText().equals("") ? 0 : Float.parseFloat(this.jtfCantidad.getText());
+        if(cantidad > 0) this.jbtConvertir.doClick();
     }
 
     /**
@@ -58,13 +94,11 @@ public class Principal extends javax.swing.JFrame {
         jlbFecha = new javax.swing.JLabel();
         jtfCantidad = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
-        jlbNombreBase = new javax.swing.JLabel();
-        jlbNombreObjetivo = new javax.swing.JLabel();
-        jlbCantidadBase = new javax.swing.JLabel();
-        jlbCantidadObjetivo = new javax.swing.JLabel();
         jbtConvertir = new javax.swing.JButton();
         jbtLimpiar = new javax.swing.JButton();
-        jlbNombreObjetivo1 = new javax.swing.JLabel();
+        jlbConversion = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtbConversion = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -120,22 +154,6 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 32, Short.MAX_VALUE)
         );
 
-        jlbNombreBase.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
-        jlbNombreBase.setText("Pesos mexicanos (MXN)");
-
-        jlbNombreObjetivo.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
-        jlbNombreObjetivo.setText("Pesos Argentinos (ARS):");
-
-        jlbCantidadBase.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
-        jlbCantidadBase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlbCantidadBase.setText("000.00");
-        jlbCantidadBase.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jlbCantidadObjetivo.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
-        jlbCantidadObjetivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlbCantidadObjetivo.setText("000.00");
-        jlbCantidadObjetivo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         jbtConvertir.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
         jbtConvertir.setText("Convertir");
         jbtConvertir.addActionListener(new java.awt.event.ActionListener() {
@@ -153,36 +171,35 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jlbNombreObjetivo1.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
-        jlbNombreObjetivo1.setText("Equivalen a --->");
+        jlbConversion.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbConversion.setText("1.00 Pesos Mexicanos equivalen a 10.00 Pesos argentinos");
+
+        jtbConversion.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jtbConversion.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"000.00$", "Equivalen a ---->", "000.00$"}
+            },
+            new String [] {
+                "Pesos Mexicanos (MXN)", "", "Pesos Argentinos (ARS)"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jtbConversion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jtbConversion.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jtbConversion);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jlbCantidadBase, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jlbNombreBase)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
-                .addComponent(jlbNombreObjetivo1)
-                .addGap(68, 68, 68)
-                .addComponent(jlbNombreObjetivo)
-                .addGap(18, 18, 18)
-                .addComponent(jlbCantidadObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addComponent(jlbDivisa1)
-                .addGap(18, 18, 18)
-                .addComponent(jcbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jlbDivisa2)
-                .addGap(18, 18, 18)
-                .addComponent(jcbObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(99, 99, 99))
             .addGroup(layout.createSequentialGroup()
                 .addGap(324, 324, 324)
                 .addComponent(jlbFecha)
@@ -190,16 +207,31 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jbtConvertir)
-                        .addGap(103, 103, 103)
-                        .addComponent(jbtLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(97, 97, 97))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jlbNombreCantidad)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jlbConversion)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jbtConvertir)
+                            .addGap(103, 103, 103)
+                            .addComponent(jbtLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(97, 97, 97))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jlbNombreCantidad)
+                            .addGap(18, 18, 18)
+                            .addComponent(jtfCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(232, 232, 232))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jlbDivisa1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jcbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                        .addComponent(jlbDivisa2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jcbObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(99, 99, 99))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,31 +253,42 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtConvertir)
                     .addComponent(jbtLimpiar))
-                .addGap(84, 84, 84)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbNombreBase)
-                    .addComponent(jlbNombreObjetivo)
-                    .addComponent(jlbCantidadObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlbCantidadBase, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlbNombreObjetivo1))
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addGap(89, 89, 89)
+                .addComponent(jlbConversion)
+                .addGap(62, 62, 62)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbObjetivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbObjetivoActionPerformed
-        this.jlbNombreObjetivo.setText(this.divisas.get(this.jcbObjetivo.getSelectedIndex()).toString());
-        this.jbtLimpiar.doClick();
+        this.indexJcbObjetivo = this.jcbObjetivo.getSelectedIndex();
+        
+        Divisa divisaBase = this.divisas.get(this.indexJcbBase);
+        Divisa divisaObjetivo = this.divisas.get(this.indexJcbObjetivo);
+        
+        this.setTableHeader(divisaObjetivo.toString(), 2);
+        this.setLabelEquivalenciaBase(divisaBase, divisaObjetivo);
+        this.verifyAutoConversion();
     }//GEN-LAST:event_jcbObjetivoActionPerformed
 
     private void jcbBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbBaseActionPerformed
-        this.jlbNombreBase.setText(this.divisas.get(this.jcbBase.getSelectedIndex()).toString());
-        this.jlbNombreCantidad.setText("Ingrese la cantidad de " + this.divisas.get(this.jcbBase.getSelectedIndex()).toString());
+        this.indexJcbBase = this.jcbBase.getSelectedIndex();
+        
+        Divisa divisaBase = this.divisas.get(this.indexJcbBase);
+        Divisa divisaObjetivo = this.divisas.get(this.indexJcbObjetivo);
+        
+        this.setTableHeader(divisaBase.toString(), 0);
+        this.setLabelEquivalenciaBase(divisaBase, divisaObjetivo);
+        this.verifyAutoConversion();
+        
+        this.jlbNombreCantidad.setText(String.format("Ingrese la cantidad de %s", divisaBase.toString()));
     }//GEN-LAST:event_jcbBaseActionPerformed
 
     private void jbtConvertirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtConvertirActionPerformed
-        float cantidad = Float.parseFloat(this.jtfCantidad.getText());
+        float cantidad = this.jtfCantidad.getText().equals("") ? 0 : Float.parseFloat(this.jtfCantidad.getText());
         
         if(cantidad <= 0) {
             JOptionPane.showMessageDialog(null, "La cantidad ingresada debe ser mayor o igual a 1", "Cantidad invalida", JOptionPane.ERROR_MESSAGE);
@@ -253,13 +296,12 @@ public class Principal extends javax.swing.JFrame {
             return;
         }
         
-        float conversion  = this.conversor.convertir(this.divisas.get(this.jcbBase.getSelectedIndex()),
-                                                        this.divisas.get(this.jcbObjetivo.getSelectedIndex()),
-                                                        Float.parseFloat(this.jtfCantidad.getText()));
+        float conversion  = this.conversor.convertir(this.divisas.get(this.indexJcbBase), this.divisas.get(this.indexJcbObjetivo), cantidad);
         
-        this.jlbCantidadBase.setText(this.jtfCantidad.getText() + " $");
-        this.jlbCantidadObjetivo.setText(String.valueOf(conversion) + " $");
+        String roundedConversion = new DecimalFormat("0.00").format(conversion);
         
+        this.jtbConversion.setValueAt(cantidad + " $", 0, 0);
+        this.jtbConversion.setValueAt(roundedConversion + " $", 0, 2);
     }//GEN-LAST:event_jbtConvertirActionPerformed
 
     private void jtfCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadKeyTyped
@@ -278,8 +320,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void jbtLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLimpiarActionPerformed
         this.jtfCantidad.setText("");
-        this.jlbCantidadBase.setText("000.00 $");
-        this.jlbCantidadObjetivo.setText("000.00 $");
+        this.jtbConversion.setValueAt("000.00 $", 0, 0);
+        this.jtbConversion.setValueAt("000.00 $", 0, 2);
         this.jbtLimpiar.setEnabled(false);
     }//GEN-LAST:event_jbtLimpiarActionPerformed
 
@@ -327,19 +369,17 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtConvertir;
     private javax.swing.JButton jbtLimpiar;
     private javax.swing.JComboBox<String> jcbBase;
     private javax.swing.JComboBox<String> jcbObjetivo;
-    private javax.swing.JLabel jlbCantidadBase;
-    private javax.swing.JLabel jlbCantidadObjetivo;
+    private javax.swing.JLabel jlbConversion;
     private javax.swing.JLabel jlbDivisa1;
     private javax.swing.JLabel jlbDivisa2;
     private javax.swing.JLabel jlbFecha;
-    private javax.swing.JLabel jlbNombreBase;
     private javax.swing.JLabel jlbNombreCantidad;
-    private javax.swing.JLabel jlbNombreObjetivo;
-    private javax.swing.JLabel jlbNombreObjetivo1;
+    private javax.swing.JTable jtbConversion;
     private javax.swing.JTextField jtfCantidad;
     // End of variables declaration//GEN-END:variables
 }
