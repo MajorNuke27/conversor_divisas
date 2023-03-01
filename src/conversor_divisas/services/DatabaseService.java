@@ -45,7 +45,7 @@ public class DatabaseService extends Database implements Closeable{
     public ArrayList<Divisa> getDivisas() throws SQLException {
 
         ArrayList<Divisa> divisasObj = new ArrayList<>(163);
-        ArrayList<String[]> divisasString = super.ejecutarQuery("SELECT * FROM divisa ORDER BY valor_de_cambio ASC", 3, 163);
+        ArrayList<String[]> divisasString = super.ejecutarQuery("SELECT * FROM divisa ORDER BY nombre ASC", 3, 163);
 
         divisasString.forEach( divisa -> {
 
