@@ -2,11 +2,13 @@ package conversor_divisas.view;
 
 import conversor_divisas.model.Divisa;
 import conversor_divisas.services.ConversionService;
+import java.awt.Color;
 import java.awt.Font;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -21,6 +23,8 @@ public class Principal extends javax.swing.JFrame {
     private ConversionService conversor;
     private int indexJcbBase;
     private int indexJcbObjetivo;
+    private int x;
+    private int y;
     
     /**
      * Creates new form Principal
@@ -30,6 +34,9 @@ public class Principal extends javax.swing.JFrame {
         this.indexJcbObjetivo = 1;
         initComponents();
         this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new Color(27, 27, 30));
+        this.jlbClose.setIcon(new ImageIcon("assets\\close.png"));
+        this.jlbMin.setIcon(new ImageIcon("assets\\minimize.png"));
     }
     
     public Principal(ArrayList<Divisa> divisas, LocalDate fecha) {
@@ -41,7 +48,7 @@ public class Principal extends javax.swing.JFrame {
         this.setComboBoxDivisas(divisas);
         this.jcbObjetivo.setSelectedIndex(1);
         
-        this.jtbConversion.getTableHeader().setFont(new Font("Microsoft Sans Serif", 0, 16));
+        this.jtbConversion.getTableHeader().setFont(new Font("Century Gothic", 0, 18));
         this.jtbConversion.setRowHeight(50);
         
         DefaultTableCellRenderer cellRender = new DefaultTableCellRenderer();
@@ -94,43 +101,63 @@ public class Principal extends javax.swing.JFrame {
         jlbFecha = new javax.swing.JLabel();
         jtfCantidad = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
+        jlbClose = new javax.swing.JLabel();
+        jlbMin = new javax.swing.JLabel();
         jbtConvertir = new javax.swing.JButton();
         jbtLimpiar = new javax.swing.JButton();
         jlbConversion = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbConversion = new javax.swing.JTable();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(500, 100), new java.awt.Dimension(500, 100), new java.awt.Dimension(500, 100));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 100), new java.awt.Dimension(50, 100), new java.awt.Dimension(50, 100));
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 100), new java.awt.Dimension(50, 100), new java.awt.Dimension(50, 100));
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(500, 100), new java.awt.Dimension(500, 100), new java.awt.Dimension(500, 100));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
         setSize(new java.awt.Dimension(900, 600));
 
-        jcbBase.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jcbBase.setBackground(new java.awt.Color(27, 27, 30));
+        jcbBase.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
+        jcbBase.setForeground(new java.awt.Color(240, 240, 240));
+        jcbBase.setOpaque(true);
         jcbBase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbBaseActionPerformed(evt);
             }
         });
 
-        jcbObjetivo.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jcbObjetivo.setBackground(new java.awt.Color(27, 27, 30));
+        jcbObjetivo.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
+        jcbObjetivo.setForeground(new java.awt.Color(240, 240, 240));
+        jcbObjetivo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jcbObjetivo.setOpaque(true);
         jcbObjetivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbObjetivoActionPerformed(evt);
             }
         });
 
-        jlbDivisa1.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbDivisa1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jlbDivisa1.setForeground(new java.awt.Color(240, 240, 240));
         jlbDivisa1.setText("Convertir de:");
 
-        jlbDivisa2.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbDivisa2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jlbDivisa2.setForeground(new java.awt.Color(240, 240, 240));
         jlbDivisa2.setText("a:");
 
-        jlbNombreCantidad.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbNombreCantidad.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jlbNombreCantidad.setForeground(new java.awt.Color(240, 240, 240));
         jlbNombreCantidad.setText("Ingrese la cantidad de Pesos mexicanos (MXN):");
 
-        jlbFecha.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbFecha.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jlbFecha.setForeground(new java.awt.Color(240, 240, 240));
         jlbFecha.setText("Tasa de cambio del dia: 8 de Diciembre de 2022");
 
-        jtfCantidad.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jtfCantidad.setBackground(new java.awt.Color(27, 27, 30));
+        jtfCantidad.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jtfCantidad.setForeground(new java.awt.Color(240, 240, 240));
         jtfCantidad.setToolTipText("");
         jtfCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -141,40 +168,87 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(10, 151, 156));
+        jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jPanel1MouseDragged(evt);
+            }
+        });
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel1MousePressed(evt);
+            }
+        });
+
+        jlbClose.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbClose.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlbClose.setAlignmentX(0.5F);
+        jlbClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jlbClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlbCloseMouseClicked(evt);
+            }
+        });
+
+        jlbMin.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbMin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlbMin.setAlignmentX(0.5F);
+        jlbMin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jlbMin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlbMinMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jlbMin)
+                .addGap(18, 18, 18)
+                .addComponent(jlbClose)
+                .addGap(12, 12, 12))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 32, Short.MAX_VALUE)
+            .addComponent(jlbMin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(jlbClose, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jbtConvertir.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jbtConvertir.setBackground(new java.awt.Color(10, 151, 156));
+        jbtConvertir.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jbtConvertir.setForeground(new java.awt.Color(240, 240, 240));
         jbtConvertir.setText("Convertir");
+        jbtConvertir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtConvertir.setOpaque(true);
         jbtConvertir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtConvertirActionPerformed(evt);
             }
         });
 
-        jbtLimpiar.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jbtLimpiar.setBackground(new java.awt.Color(81, 81, 89));
+        jbtLimpiar.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jbtLimpiar.setForeground(new java.awt.Color(240, 240, 240));
         jbtLimpiar.setText("Limpiar");
+        jbtLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jbtLimpiar.setEnabled(false);
+        jbtLimpiar.setOpaque(true);
         jbtLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtLimpiarActionPerformed(evt);
             }
         });
 
-        jlbConversion.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jlbConversion.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jlbConversion.setForeground(new java.awt.Color(240, 240, 240));
         jlbConversion.setText("1.00 Pesos Mexicanos equivalen a 10.00 Pesos argentinos");
 
-        jtbConversion.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 16)); // NOI18N
+        jtbConversion.setBackground(new java.awt.Color(27, 27, 30));
+        jtbConversion.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jtbConversion.setForeground(new java.awt.Color(240, 240, 240));
         jtbConversion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"000.00$", "Equivalen a ---->", "000.00$"}
@@ -192,6 +266,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jtbConversion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jtbConversion.setGridColor(new java.awt.Color(0, 0, 0));
         jtbConversion.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jtbConversion);
 
@@ -201,63 +276,81 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(324, 324, 324)
-                .addComponent(jlbFecha)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(filler3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlbConversion)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jbtConvertir)
-                            .addGap(103, 103, 103)
-                            .addComponent(jbtLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(97, 97, 97))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jlbNombreCantidad)
-                            .addGap(18, 18, 18)
-                            .addComponent(jtfCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(232, 232, 232))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlbDivisa1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jcbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
-                        .addComponent(jlbDivisa2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jcbObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(99, 99, 99))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(filler4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlbDivisa1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jcbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlbDivisa2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jcbObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(263, 263, 263)
+                                        .addComponent(jbtConvertir)
+                                        .addGap(103, 103, 103)
+                                        .addComponent(jbtLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(237, 237, 237)
+                                        .addComponent(jlbFecha)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jlbNombreCantidad)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jlbConversion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(jlbFecha)
-                .addGap(77, 77, 77)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbDivisa1)
-                    .addComponent(jcbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlbDivisa2)
-                    .addComponent(jcbObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(77, 77, 77)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbNombreCantidad)
-                    .addComponent(jtfCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtConvertir)
-                    .addComponent(jbtLimpiar))
-                .addGap(89, 89, 89)
-                .addComponent(jlbConversion)
-                .addGap(62, 62, 62)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(filler4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jlbFecha)
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlbDivisa1)
+                            .addComponent(jcbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlbDivisa2)
+                            .addComponent(jcbObjetivo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlbNombreCantidad)
+                            .addComponent(jtfCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(76, 76, 76)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbtConvertir)
+                            .addComponent(jbtLimpiar))
+                        .addGap(95, 95, 95)
+                        .addComponent(jlbConversion)
+                        .addGap(56, 56, 56)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(filler3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(filler2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
 
         pack();
@@ -272,6 +365,8 @@ public class Principal extends javax.swing.JFrame {
         this.setTableHeader(divisaObjetivo.toString(), 2);
         this.setLabelEquivalenciaBase(divisaBase, divisaObjetivo);
         this.verifyAutoConversion();
+        
+        this.jcbObjetivo.setToolTipText(divisaObjetivo.toString());
     }//GEN-LAST:event_jcbObjetivoActionPerformed
 
     private void jcbBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbBaseActionPerformed
@@ -285,6 +380,7 @@ public class Principal extends javax.swing.JFrame {
         this.verifyAutoConversion();
         
         this.jlbNombreCantidad.setText(String.format("Ingrese la cantidad de %s", divisaBase.toString()));
+        this.jcbBase.setToolTipText(divisaBase.toString());
     }//GEN-LAST:event_jcbBaseActionPerformed
 
     private void jbtConvertirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtConvertirActionPerformed
@@ -331,6 +427,23 @@ public class Principal extends javax.swing.JFrame {
         if(cantidad.length() > 0) this.jbtLimpiar.setEnabled(true);
         else this.jbtLimpiar.setEnabled(false);
     }//GEN-LAST:event_jtfCantidadKeyReleased
+
+    private void jlbCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbCloseMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jlbCloseMouseClicked
+
+    private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
+        this.x = evt.getX();
+        this.y = evt.getY();
+    }//GEN-LAST:event_jPanel1MousePressed
+
+    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
+        this.setLocation(this.getLocation().x + evt.getX() - x, this.getLocation().y + evt.getY() - y);
+    }//GEN-LAST:event_jPanel1MouseDragged
+
+    private void jlbMinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbMinMouseClicked
+        this.setState(ICONIFIED);
+    }//GEN-LAST:event_jlbMinMouseClicked
     
     /**
      * @param args the command line arguments
@@ -368,16 +481,22 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtConvertir;
     private javax.swing.JButton jbtLimpiar;
     private javax.swing.JComboBox<String> jcbBase;
     private javax.swing.JComboBox<String> jcbObjetivo;
+    private javax.swing.JLabel jlbClose;
     private javax.swing.JLabel jlbConversion;
     private javax.swing.JLabel jlbDivisa1;
     private javax.swing.JLabel jlbDivisa2;
     private javax.swing.JLabel jlbFecha;
+    private javax.swing.JLabel jlbMin;
     private javax.swing.JLabel jlbNombreCantidad;
     private javax.swing.JTable jtbConversion;
     private javax.swing.JTextField jtfCantidad;
