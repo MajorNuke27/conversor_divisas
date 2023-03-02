@@ -16,7 +16,7 @@ https://user-images.githubusercontent.com/92752502/222536674-f9ac245a-300b-4437-
 * Soporta **hasta cien usuarios** por dia.
 
 ## ¿Como puedo utilizar esta aplicación?
-Puedes descargar la ultima versión de la aplicación [**aquí**]().
+Puedes descargar la ultima versión de la aplicación [**aquí**](https://github.com/MajorNuke27/conversor_divisas/releases/tag/v1.1.0).
 
 Necesitaras Java en su version 8 o superior para poder ejecutarlo. En el siguiente enlace encontrarás los links de descarga de Java en su ultima versión para los distintos sistemas operativos disponibles: <https://www.java.com/es/download/manual.jsp>.
 Despues de la descarga, solo sigue las instrucciones que se muestran en tu pantalla.
